@@ -1,0 +1,41 @@
+name: Update GitHub Stats
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' 
+  push:
+    branches:
+      - main
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+
+    - name: Generate GitHub Stats image
+      run: |
+        TIMESTAMP=$(date +%s)
+        rm stats.svg
+        rm toplangs.svg
+        curl -s "https://github-readme-stats.vercel.app/api?username=JSTks24&include_all_commits=true&count_private=true&show_icons=true&line_height=20&title_color=7A7ADB&icon_color=2234AE&text_color=D3D3D3&bg_color=0,000000,130F40&count_private=true&access_token=${{ secrets.Private_Repo_Status }}&random=$TIMESTAMP" -o stats.svg
+        curl -s "https://github-readme-stats.vercel.app/api/top-langs/?username=JSTks24&show_icons=true&count_private=true&access_token=${{ secrets.Private_Repo_Status }}&layout=compact&text_color=daf7dc&bg_color=151515&random=$TIMESTAMP" -o toplangs.svg
+
+    - name: Commit and push update
+      env:
+        GH_TOKEN: ${{ secrets.Private_Repo_Status }}
+      run: |
+        git config --global user.email "2677299914@qq.com"
+        git config --global user.name "JSTks24"
+        
+        git remote set-url origin https://$GH_TOKEN@github.com/JSTks24/JSTks24.git
+        git add toplangs.svg
+        git add stats.svg
+        git commit -m "[skip ci]" --amend --no-edit
+        git push --force
