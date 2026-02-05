@@ -19,7 +19,7 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: stats
-          options: username=JSTks24&show_icons=true
+          options: username=JSTks24&show_icons=true&count_private=true&include_all_commits=true&line_height=20&title_color=7A7ADB&icon_color=2234AE&text_color=D3D3D3&bg_color=0,000000,130F40
           path: profile_svg/stats.svg
           token: ${{ secrets.Private_Repo_Status }}
 
@@ -27,7 +27,7 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v1
         with:
           card: top-langs
-          options: username=JSTks24&layout=compact&langs_count=6
+          options: username=JSTks24&layout=compact&langs_count=6&count_private=true&include_all_commits=true&text_color=daf7dc&bg_color=151515
           path: profile_svg/top-langs.svg
           token: ${{ secrets.Private_Repo_Status }}
 

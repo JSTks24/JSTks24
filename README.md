@@ -19,11 +19,11 @@
 
 <br>
 
-![Stats](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/profile_svg/stats.svg)
+![Stats](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/stats.svg)
 
 </br>
 
-![Top Langs](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/profile_svg/top-langs.svg)
+![Top Langs](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/top-langs.svg)
 
 
 <h3> 🤝🏻 Connect with Me </h3>
