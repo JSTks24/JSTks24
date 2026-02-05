@@ -11,7 +11,7 @@
 
 <h3>🛠 Tech Stack</h3>
 
-- 💻 &nbsp; C++ | Rust | Lua
+- 💻 &nbsp; C/C++ | C# | Lua
 - 🌐 &nbsp; HTML | CSS | JavaScript | TypeScript | Vue
 - 🛢 &nbsp; MySQL
 - 🔧 &nbsp; Visual Studio code | Visual Studio | Git
@@ -19,11 +19,11 @@
 
 <br>
 
-[![Stats](./stats.svg?v=$TIMESTAMP)](https://github-readme-stats.vercel.app/api?username=JSTks24&include_all_commits=true&count_private=true&show_icons=true&line_height=20&title_color=7A7ADB&icon_color=2234AE&text_color=D3D3D3&bg_color=0,000000,130F40&count_private=true&random=$TIMESTAMP)
+![Stats](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/profile_svg/stats.svg)
 
 </br>
 
-[![Top Langs](./toplangs.svg?v=$TIMESTAMP)](https://github-readme-stats.vercel.app/api/top-langs/?username=JSTks24&show_icons=true&count_private=true&layout=compact&text_color=daf7dc&bg_color=151515&random=$TIMESTAMP)
+![Top Langs](https://raw.githubusercontent.com/JSTks24/JSTks24/useless/profile_svg/top-langs.svg)
 
 
 <h3> 🤝🏻 Connect with Me </h3>
