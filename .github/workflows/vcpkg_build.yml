@@ -1,0 +1,131 @@
+name: Build VCPKG Packages
+description: Build VCPKG packages for supported platforms.
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "The repository build (format: owner/repo)"
+        required: true
+        type: string
+      folder:
+        description: "The folder containing the vcpkg.json to build"
+        required: true
+        type: string
+      has_triple_file:
+        description: "Does the project have a triple file?"
+        type: boolean
+        default: false
+      platform:
+        description: "Select the platform to build for"
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - windows
+          - linux
+          - macos
+
+jobs:
+  win-build:
+    if: ${{ inputs.platform == 'windows' || inputs.platform == 'all' }}
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        name: Prepare BUILD Files
+        with:
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.Private_Repo_Status }}
+
+      - name: Prepare VCPKG Files
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          .\bootstrap-vcpkg.bat
+        
+      - name: Build VCPKG Packages
+        run: |
+          cd vcpkg
+          .\vcpkg install `
+            --x-manifest-root="../${{ inputs.folder }}" `
+            --triplet "x64-windows" `
+            --x-install-root="../export-output" `
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }}
+
+      - name: Upload Windows Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-windows
+          path: export-output/x64-windows/
+          retention-days: 1
+
+  linux-build:
+    if: ${{ inputs.platform == 'linux' || inputs.platform == 'all' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        name: Prepare BUILD Files
+        with:
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.Private_Repo_Status }}
+
+      - name: Prepare VCPKG Files
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          ./bootstrap-vcpkg.sh -disableMetrics
+        
+      - name: Build VCPKG Packages
+        run: |
+          cd vcpkg
+          ./vcpkg install \
+            --x-manifest-root="../${{ inputs.folder }}" \
+            --triplet "x64-linux" \
+            --x-install-root="../export-output" \
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }}
+
+      - name: Upload Linux Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-linux
+          path: export-output/x64-linux/
+          retention-days: 1
+
+  macos-build:
+    if: ${{ inputs.platform == 'macos' || inputs.platform == 'all' }}
+    runs-on: macos-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        name: Prepare BUILD Files
+        with:
+          repository: ${{ inputs.repository }}
+          token: ${{ secrets.Private_Repo_Status }}
+
+      - name: Prepare VCPKG Files
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          ./bootstrap-vcpkg.sh -disableMetrics
+        
+      - name: Build VCPKG Packages
+        run: |
+          cd vcpkg
+          ./vcpkg install \
+            --x-manifest-root="../${{ inputs.folder }}" \
+            --triplet "arm64-osx" \
+            --x-install-root="../export-output" \
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }}
+
+      - name: Upload MacOS Packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-macos
+          path: export-output/arm64-osx/
+          retention-days: 1
