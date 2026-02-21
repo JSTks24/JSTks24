@@ -1,8 +1,8 @@
 # This workflow builds VCPKG packages for supported platforms based on the provided inputs.
 # 这个工作流根据提供的输入构建支持平台的VCPKG包。
 
-# Custom triple files should be placed in the corresponding directory, and the name can refer to the examples in the template folder; custom port files need to be placed in the corresponding library folder under the directory.
-# 自定义的三元组直接放在对应的目录下，名称可以看template文件夹下的示例；自定义的port文件需要放在目录下的对应库名的文件夹中
+# Custom triple files and port files can be included in the build process by placing them in the appropriate directories. Custom triple files should be placed in the custom folder under the corresponding directory, and custom port files should be placed in the corresponding library folder within the custom folder.
+# 自定义的三元组直接放在对应的目录下的custom文件夹内，名称可以看template文件夹下的示例；自定义的port文件需要放在目录下custom文件夹的对应库名的文件夹中
 
 name: Build VCPKG Packages
 description: Build VCPKG packages for supported platforms.
@@ -63,7 +63,7 @@ jobs:
             --x-manifest-root="../${{ inputs.folder }}" `
             --triplet "x64-windows" `
             --x-install-root="../export-output" `
-            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}"', inputs.folder) || '' }}
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}/custom"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}/custom"', inputs.folder) || '' }}
 
       - name: Upload Windows Packages
         uses: actions/upload-artifact@v4
@@ -97,7 +97,7 @@ jobs:
             --x-manifest-root="../${{ inputs.folder }}" \
             --triplet "x64-linux" \
             --x-install-root="../export-output" \
-            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}"', inputs.folder) || '' }}
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}/custom"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}/custom"', inputs.folder) || '' }}
 
       - name: Upload Linux Packages
         uses: actions/upload-artifact@v4
@@ -131,7 +131,7 @@ jobs:
             --x-manifest-root="../${{ inputs.folder }}" \
             --triplet "arm64-osx" \
             --x-install-root="../export-output" \
-            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}"', inputs.folder) || '' }}
+            ${{ inputs.has_triple_file && format('--overlay-triplets="../{0}/custom"', inputs.folder) || '' }} ${{ inputs.has_port_file && format('--overlay-ports="../{0}/custom"', inputs.folder) || '' }}
 
       - name: Upload MacOS Packages
         uses: actions/upload-artifact@v4
