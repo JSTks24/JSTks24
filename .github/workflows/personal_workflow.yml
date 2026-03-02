@@ -1,4 +1,4 @@
-name: Update README cards
+name: Execute Personal Workflow
 
 on:
   workflow_dispatch:
@@ -6,8 +6,9 @@ on:
     - cron: "6 6 * * *" # Runs once daily at 6 AM
 
 jobs:
-  build:
+  update-profile:
     runs-on: ubuntu-latest
+    name: Update GitHub Profile
 
     permissions:
       contents: write
@@ -39,3 +40,28 @@ jobs:
           keep_history: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
+  cleanup:
+    name: Cleanup Old Workflow Runs
+    runs-on: ubuntu-latest
+
+    permissions:
+      actions: write
+
+    steps:
+      - name: Delete any workflow runs older than 30 days
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 30
+          keep_minimum_runs: 0
+      
+      - name: Delete vcpkg-build runs older than 24 hours
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 0
+          delete_workflow_pattern: "vcpkg_build.yml"
